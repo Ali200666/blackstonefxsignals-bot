@@ -1,9 +1,9 @@
 import logging
-from telegram import Update, ForceReply
-from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes, MessageHandler, filters
+from telegram import Update
+from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 
-# Foydalanuvchilar ro'yxati (ruxsat berilganlar)
-allowed_users = [123456789, 987654321]  # O'zingiz va do'stlaringiz Telegram ID'sini kiriting
+# Faqat ruxsat berilgan foydalanuvchilar ro'yxati (Telegram ID raqamlari)
+allowed_users = [123456789, 987654321]  # <-- O'zingiz va do‘stlaringiz ID'sini yozing
 
 # Loglarni sozlash
 logging.basicConfig(
@@ -11,7 +11,7 @@ logging.basicConfig(
     level=logging.INFO
 )
 
-# Start komandasi
+# /start komandasi
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.effective_user.id in allowed_users:
         await update.message.reply_text(
@@ -20,7 +20,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         await update.message.reply_text("Kechirasiz, sizda ushbu botdan foydalanishga ruxsat yo‘q.")
 
-# Signal yuborish funksiyasi (admin uchun)
+# /signal komandasi - yangi signal yuborish
 async def signal(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.effective_user.id in allowed_users:
         text = " ".join(context.args)
@@ -31,7 +31,7 @@ async def signal(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         await update.message.reply_text("Siz signal yuborolmaysiz.")
 
-# TP yoki SL natijasini yuborish
+# /natija komandasi - TP/SL natijani yuborish
 async def result(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.effective_user.id in allowed_users:
         text = " ".join(context.args)
@@ -57,5 +57,3 @@ if __name__ == '__main__':
         await app.run_polling()
 
     asyncio.run(main())
-    python3 bot.py
-    Bot ishga tushdi...
